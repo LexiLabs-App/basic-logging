@@ -4,7 +4,7 @@
 ![GitHub License](https://img.shields.io/github/license/lexilabs-app/basic-logging)
 ![GitHub Release Date](https://img.shields.io/github/release-date/lexilabs-app/basic-logging)
 [![Maven Central](https://img.shields.io/maven-central/v/app.lexilabs.basic/basic-logging?color=blue)](https://central.sonatype.com/artifact/app.lexilabs.basic/basic-logging)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7f52ff.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.20-7f52ff.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 
 A Kotlin Multiplatform library to rapidly add logging to any project.
 
