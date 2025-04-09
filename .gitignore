@@ -30,3 +30,5 @@ replay_pid*
 .idea/
 .gradle/
 docs/
+build/
+*/build/
