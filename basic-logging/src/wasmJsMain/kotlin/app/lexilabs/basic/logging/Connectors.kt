@@ -2,8 +2,15 @@
 
 package app.lexilabs.basic.logging
 
-public external fun debug(tag: String, message: String)
-public external fun info(tag: String, message: String)
-public external fun warn(tag: String, message: String)
-public external fun error(tag: String, message: String)
-public external fun whatTheF(tag: String, message: String)
+@JsFun("(message) => console.debug(message)")
+public external fun debug(message: String): Unit = definedExternally
+
+@JsFun("(message) => console.log(message)")
+public external fun log(message: String): Unit = definedExternally
+
+@JsFun("(message) => console.warn(message)")
+public external fun warn(message: String): Unit = definedExternally
+
+@JsFun("(message) => console.error(message)")
+public external fun error(message: String): Unit = definedExternally
+
