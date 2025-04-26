@@ -13,4 +13,3 @@ public external fun warn(message: String): Unit = definedExternally
 
 @JsFun("(message) => console.error(message)")
 public external fun error(message: String): Unit = definedExternally
-
