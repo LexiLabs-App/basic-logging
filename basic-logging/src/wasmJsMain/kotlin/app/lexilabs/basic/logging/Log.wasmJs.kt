@@ -1,6 +1,7 @@
 package app.lexilabs.basic.logging
 
 public actual object Log : Logger {
+  
     actual override fun v(tag: String, message: String): Unit = debug(tag, message)
 
     actual override fun d(tag: String, message: String): Unit = debug(tag, message)
