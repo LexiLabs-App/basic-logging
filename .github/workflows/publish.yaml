@@ -24,33 +24,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Write test variable to local.properties
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          echo test="${TEST}" >> local.properties
-        env:
-          TEST: ${{ vars.TEST }}
-
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2
 
       - name: Check api
         run: ./gradlew apiCheck
-
-      - name: Generate kover coverage report
-        run: ./gradlew koverXmlReport
-
-      - name: Add coverage report to PR
-        if: ${{ github.event_name == 'pull_request' }}
-        id: kover
-        uses: mi-kas/kover-report@v1
-        with:
-          path: ${{ github.workspace }}/basic-logging/build/reports/kover/report.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Code Coverage
-          update-comment: true
-          min-coverage-overall: 00
-          min-coverage-changed-files: 00
 
   release:
     name: Release to Sonatype
@@ -79,9 +57,7 @@ jobs:
           echo gpgKeyId="${GPG_KEY_ID}" >> "local.properties"
           echo gpgKeySecret="${GPG_KEY_SECRET}" >> "local.properties"
           echo gpgKeyPassword="${GPG_KEY_PASSWORD}" >> "local.properties"
-          echo test="${TEST}" >> local.properties
         env:
-          TEST: ${{ vars.TEST }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
@@ -116,17 +92,12 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Generate api docs with dokka
-        run: ./gradlew dokkaHtmlMultiModule
-
-      - name: Move dokka api-doc to docs
-        run: |
-          sudo mkdir -p build/docs
-          sudo mv build/dokka/htmlMultiModule/* build/docs
+        run: ./gradlew dokkaHtml
 
       - name: Upload pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/docs
+          path: docs
 
       - name: Release to GitHub Pages
         id: deployment
