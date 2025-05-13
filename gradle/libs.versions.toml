@@ -1,7 +1,7 @@
 [versions]
 logging = "0.2.6"
 kotlin = "2.1.21"
-agp = "8.9.2"
+agp = "8.10.0"
 bcv = "0.17.0"
 dokka = "2.0.0"
 kover = "0.9.1"
