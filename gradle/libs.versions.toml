@@ -1,6 +1,6 @@
 [versions]
-logging = "0.2.6-beta03"
-kotlin = "2.1.21-RC"
+logging = "0.2.6"
+kotlin = "2.1.21"
 agp = "8.9.2"
 bcv = "0.17.0"
 dokka = "2.0.0"
