@@ -1,4 +1,5 @@
 @file:JsModule("logger.js")
+@file:OptIn(ExperimentalWasmJsInterop::class)
 
 package app.lexilabs.basic.logging
 

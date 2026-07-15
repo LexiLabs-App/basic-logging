@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.multiplatform.library)
     alias(libs.plugins.kotlinx.binary.compatibility.validator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kover)
@@ -18,9 +18,13 @@ kotlin {
     // DON'T FORGET TO RUN `./gradlew apiDump`
     explicitApi()
 
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
+    }
 
-    js(IR) {
+    js {
         binaries.executable()
         browser {
             commonWebpackConfig {
@@ -47,12 +51,9 @@ kotlin {
         iosX64(), // mobile
         iosArm64(), // mobile
         iosSimulatorArm64(), // mobile
-        macosX64(), // desktop
         macosArm64(), // desktop
-        tvosX64(), // tv
         tvosArm64(), // tv
         tvosSimulatorArm64(), // tv
-        watchosX64(), // watch
         watchosArm32(), // watch
         watchosArm64(), // watch
         watchosDeviceArm64(), // watch
@@ -79,28 +80,14 @@ kotlin {
 
     compilerOptions { freeCompilerArgs.add("-Xexpect-actual-classes") }
 
-    // Android JVM target target options
-    androidTarget {
-        publishLibraryVariants("release", "debug")
-        compilations.all{
-            compileTaskProvider.configure{
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_17)
-                }
-            }
+    android {
+        namespace = "app.lexilabs.basic.logging"
+        compileSdk = libs.versions.build.sdk.compile.get().toInt()
+        minSdk = libs.versions.build.sdk.min.get().toInt()
+        withJava()
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_26)
         }
-    }
-}
-
-android {
-    namespace = "app.lexilabs.basic.logging"
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 4 // was 24
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 }
