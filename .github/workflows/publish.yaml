@@ -49,28 +49,24 @@ jobs:
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Write secrets to local.properties
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          echo sonatypeUsername="${SONATYPE_USERNAME}" >> "local.properties"
-          echo sonatypePassword="${SONATYPE_PASSWORD}" >> "local.properties"
-          echo gpgKeyId="${GPG_KEY_ID}" >> "local.properties"
-          echo gpgKeySecret="${GPG_KEY_SECRET}" >> "local.properties"
-          echo gpgKeyPassword="${GPG_KEY_PASSWORD}" >> "local.properties"
-        env:
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
-          GPG_KEY_SECRET: ${{ secrets.GPG_KEY_SECRET }}
-          GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
+        # Updated to 16.3 to meet Kotlin 2.2.10 requirements
+      - name: Set up Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_26.2.app/Contents/Developer
 
-      - name: Release to sonatype
-        run: ./gradlew publish
+      - name: Publish to MavenCentral
+        if: ${{ github.event_name != 'pull_request' }}
+        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_KEY_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_SECRET}}
 
   documentation:
     name: Publish documentation
     if: ${{ github.event_name != 'pull_request' }}
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs:
       - check
     environment:
@@ -92,7 +88,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Generate api docs with dokka
-        run: ./gradlew dokkaHtml
+        run: ./gradlew dokkaGenerate
 
       - name: Upload pages
         uses: actions/upload-pages-artifact@v3
