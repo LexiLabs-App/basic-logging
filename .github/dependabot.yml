@@ -10,9 +10,3 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "main"
-
-  - package-ecosystem: "gradle"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    target-branch: "publishing"
