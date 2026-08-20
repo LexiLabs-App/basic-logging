@@ -32,3 +32,5 @@ replay_pid*
 docs/
 build/
 */build/
+kotlin-js-store/
+kotlin-js-store/*
